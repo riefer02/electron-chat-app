@@ -1,5 +1,5 @@
 // Main Process
-const { app, BrowserWindow, Notification } = require("electron");
+const { app, BrowserWindow, Notification, ipcMain } = require("electron");
 const isDev = !app.isPackaged;
 const path = require("path");
 
@@ -11,27 +11,25 @@ function createWindow() {
     backgroundColor: "#c2e1c2",
     webPreferences: {
       nodeIntegration: false,
-      // will sanitize JS code
-      // ToDo: explain when React application is initialized
       worldSafeExecuteJavaScript: true,
-      // is a feature that ensures that both, your preload scripts and Electron
-      // internal logical run in separate context
       contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
   window.loadFile("index.html");
   isDev && window.webContents.openDevTools();
 
-  window.webContents.once("dom-ready", () => {
-    // const notification = new Notification({
-    //   title: "Hello World",
-    //   body: "My first electron application!",
-    // });
-    // notification.show();
-  });
+  //   window.webContents.once("dom-ready", () => {
+  //     const notification = new Notification({
+  //       title: "Hello World",
+  //       body: "My first electron application!",
+  //     });
+  //     notification.show();
+  //   });
 }
 
+console.log(isDev);
 if (isDev) {
   require("electron-reload")(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
@@ -40,6 +38,13 @@ if (isDev) {
 
 app.whenReady().then(() => {
   createWindow();
+});
+
+ipcMain.on("notify", (_, message) => {
+  new Notification({
+    title: "Notification",
+    body: message,
+  }).show();
 });
 
 app.on("window-all-closed", () => {
