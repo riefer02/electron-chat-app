@@ -1,20 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../actions/auth";
 
 export default function LoginForm() {
   const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
+    dispatch(loginUser(data));
   };
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit);
-      }}
-      className="centered-container-form"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="centered-container-form">
       <div className="header">Welcome here!</div>
       <div className="subheader">Login and chat with other people!</div>
       <div className="form-container">
