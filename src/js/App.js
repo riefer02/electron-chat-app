@@ -2,8 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
-import RegisterView from "./views/Register";
-import LoginView from "./views/Login";
+import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
 import configureStore from "./store";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
@@ -22,6 +21,10 @@ export default function App() {
         <Navbar />
         <div className="content-wrapper">
           <Switch>
+          <Route path="/" exact>
+              {" "}
+              <WelcomeView />
+            </Route>
             <Route path="/chat/:id">
               <ChatView />
             </Route>
@@ -29,15 +32,8 @@ export default function App() {
               {" "}
               <SettingsView />
             </Route>{" "}
-            <Route path="/register">
-              {" "}
-              <RegisterView />
-            </Route>
-            <Route path="/login">
-              {" "}
-              <LoginView />
-            </Route>
-            <Route path="/">
+        
+            <Route path="/home">
               {" "}
               <HomeView />
             </Route>

@@ -25,15 +25,8 @@ export default function Navbar() {
         </div>
         <div className="chat-navbar-inner-right">
           <span className="logged-in-user">Hi User</span>
-          <button
-            onClick={() => {
-              history.push("/register");
-            }}
-            className="btn btn-outline-danger ml-2"
-          >
-            Register
-          </button>
-          <Link to="/login" className="btn btn-outline-success ml-2">
+
+          <Link to="/" className="btn btn-outline-success ml-2">
             Login
           </Link>
         </div>
