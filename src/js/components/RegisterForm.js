@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../actions/auth";
+import LoadingView from "./shared/LoadingView";
 
 export default function RegisterForm() {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const error = useSelector(({ auth }) => auth.register.error);
+  const isChecking = useSelector(({ auth }) => auth.register.isChecking);
 
   const onSubmit = (registerData) => {
     dispatch(registerUser(registerData));
   };
 
-  // const onError = (errors, e) => console.log(errors, e);
-
+  if (isChecking) {
+    return <LoadingView />;
+  }
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit, onError)}
-      className="centered-container-form"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="centered-container-form">
       <div className="header">Create an account</div>
       <div className="form-container">
         <div className="form-group">
