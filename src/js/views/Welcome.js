@@ -8,9 +8,7 @@ import LoadingView from "../components/shared/LoadingView";
 export default function Welcome() {
   const [isLoginView, setIsLogin] = useState(true);
   const user = useSelector(({ auth }) => auth.user);
-  const isChecking = useSelector(({ auth }) => {
-    auth.isChecking;
-  });
+  const isChecking = useSelector(({ auth }) => auth.isChecking);
 
   const optInText = isLoginView
     ? ["Need an account?", "Register"]

@@ -5,6 +5,13 @@ import "firebase/auth";
 const createUserProfile = (userProfile) =>
   db.collection("userProfiles").doc(userProfile.uid).set(userProfile);
 
+export const getUserProfile = (uid) =>
+  db
+    .collection("userProfiles")
+    .doc(uid)
+    .get()
+    .then((snapshot) => snapshot.data());
+
 export async function register({ email, password, username, avatar }) {
   try {
     const { user } = await firebase

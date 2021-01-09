@@ -28,19 +28,25 @@ export default function Navbar() {
           {/* {message} */}
         </div>
         <div className="chat-navbar-inner-right">
-          <span className="logged-in-user">Hi User</span>
-
           <Link to="/" className="btn btn-outline-success ml-2">
             Login
           </Link>
           {user && (
-            <button
-              onClick={() => dispatch(logout())}
-              to="/"
-              className="btn btn-outline-danger ml-2"
-            >
-              Logout
-            </button>
+            <>
+              <img
+                src={user.avatar}
+                alt="user avatar"
+                className="avatar mr-2"
+              />
+              <span className="logged-in-user">Hi, {user.username}</span>
+              <button
+                onClick={() => dispatch(logout())}
+                to="/"
+                className="btn btn-outline-danger ml-3"
+              >
+                Logout
+              </button>
+            </>
           )}
         </div>
       </nav>
