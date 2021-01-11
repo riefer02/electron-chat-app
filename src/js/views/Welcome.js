@@ -4,17 +4,13 @@ import { Redirect } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
-
 export default function Welcome() {
   const [isLoginView, setIsLogin] = useState(true);
   const user = useSelector(({ auth }) => auth.user);
 
-
   const optInText = isLoginView
     ? ["Need an account?", "Register"]
     : ["Already registered?", "Login"];
-
-
 
   if (user) {
     return <Redirect to="/home" />;

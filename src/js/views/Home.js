@@ -6,8 +6,9 @@ import ViewTitle from "../components/shared/ViewTitle";
 import { fetchChats } from "../actions/chats";
 
 import { useDispatch, useSelector } from "react-redux";
+import { withBaseLayout } from "../layouts/Base";
 
-export default function Home() {
+function Home() {
   const dispatch = useDispatch();
   const chats = useSelector(({ chats }) => chats.items);
 
@@ -28,3 +29,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default withBaseLayout(Home);

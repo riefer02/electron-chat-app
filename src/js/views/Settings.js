@@ -1,12 +1,13 @@
 import React from "react";
+import { withBaseLayout } from "../layouts/Base";
 
-export default function Settings() {
+function Settings() {
   return (
     <div className="centered-view">
       <div className="centered-container">
         <form className="centered-container-form">
           <div className="header">Adjust application settings</div>
-         
+
           <div className="form-container">
             <div className="my-3">
               <div className="form-check">
@@ -43,3 +44,5 @@ export default function Settings() {
     </div>
   );
 }
+
+export default withBaseLayout(Settings,{canGoBack:true});

@@ -5,10 +5,31 @@ import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
-import Navbar from "./components/Navbar";
 import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+function AuthRoute({ children, ...rest }) {
+  const user = useSelector(({ auth }) => auth.user);
+  const onlyChild = React.Children.only(children);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user ? (
+          React.cloneElement(onlyChild, { ...rest, ...props })
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  );
+}
 
 const ContentWrapper = ({ children }) => (
   <div className="content-wrapper">{children}</div>
@@ -28,24 +49,21 @@ function ChatApp() {
 
   return (
     <Router>
-      <Navbar />
       <ContentWrapper>
         <Switch>
           <Route path="/" exact>
             {" "}
             <WelcomeView />
           </Route>
-          <Route path="/chat/:id">
+          <AuthRoute path="/chat/:id">
             <ChatView />
-          </Route>
-          <Route path="/settings">
-            {" "}
+          </AuthRoute>
+          <AuthRoute path="/settings">
             <SettingsView />
-          </Route>{" "}
-          <Route path="/home">
-            {" "}
+          </AuthRoute>{" "}
+          <AuthRoute path="/home">
             <HomeView />
-          </Route>
+          </AuthRoute>
         </Switch>
       </ContentWrapper>
     </Router>
