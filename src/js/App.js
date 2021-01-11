@@ -1,50 +1,61 @@
 import React, { useEffect } from "react";
-import { Provider, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import StoreProvider from "./store/StoreProvider";
 import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
-import configureStore from "./store";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
-const store = configureStore();
+const ContentWrapper = ({ children }) => (
+  <div className="content-wrapper">{children}</div>
+);
 
-export default function App() {
- 
-  // const sendNotification = () => {
-  //  electron.notificationApi.sendNotification("This is my custom message!"); // Emitting Event
-  // };
+function ChatApp() {
+  const dispatch = useDispatch();
+  const isChecking = useSelector(({ auth }) => auth.isChecking);
 
   useEffect(() => {
-    store.dispatch(listenToAuthChanges());
-  }, []);
+    dispatch(listenToAuthChanges());
+  }, [dispatch]);
+
+  if (isChecking) {
+    return <LoadingView />;
+  }
 
   return (
-    <Provider store={store}>
-      <Router>
-        <Navbar />
-        <div className="content-wrapper">
-          <Switch>
-            <Route path="/" exact>
-              {" "}
-              <WelcomeView />
-            </Route>
-            <Route path="/chat/:id">
-              <ChatView />
-            </Route>
-            <Route path="/settings">
-              {" "}
-              <SettingsView />
-            </Route>{" "}
-            <Route path="/home">
-              {" "}
-              <HomeView />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    </Provider>
+    <Router>
+      <Navbar />
+      <ContentWrapper>
+        <Switch>
+          <Route path="/" exact>
+            {" "}
+            <WelcomeView />
+          </Route>
+          <Route path="/chat/:id">
+            <ChatView />
+          </Route>
+          <Route path="/settings">
+            {" "}
+            <SettingsView />
+          </Route>{" "}
+          <Route path="/home">
+            {" "}
+            <HomeView />
+          </Route>
+        </Switch>
+      </ContentWrapper>
+    </Router>
+  );
+}
+
+export default function App() {
+  return (
+    <StoreProvider>
+      <ChatApp />
+    </StoreProvider>
   );
 }
