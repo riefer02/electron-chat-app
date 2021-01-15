@@ -59,7 +59,7 @@ app.on("activate", () => {
   }
 });
 
-// Chromium -> Web Engine for rendering the UI, full Chrome-like web browser
+// Chromium -> Web Engine for rendering the UI, full Chrome web browser with the removal of the Google Excess
 // V8 -> Engine that provies capabilities to execute, run JS code in the browser
 // Node JS(V8) -> we able to run JS code + provide more features
 
