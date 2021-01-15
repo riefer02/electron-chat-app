@@ -1,3 +1,4 @@
+//Firebase Proccess of JS
 import firebase from "firebase/app";
 import "firebase/firestore";
 
