@@ -6,7 +6,7 @@ export default function AvailableChatsList({ chats }) {
       <div className="row mt-3">
         {false && (
           <div className="container-fluid">
-            <div className="alert alert-warning">No chats to join :(</div>
+            <div className="alert alert-warning">No chats to join [:(] </div>
           </div>
         )}
 
