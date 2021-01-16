@@ -1,3 +1,5 @@
+// Warnung! Berühren Sie diese Dateien nicht! Da sie wichtige Reduzierungsdateien enthalten
+// Redux-Header Dateien
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import reduxThunk from "redux-thunk";
 import chatReducer from "../reducers/chats";
