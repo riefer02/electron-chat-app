@@ -7,6 +7,7 @@ import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
 import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
+import { listenToConnectionChanges } from "./actions/app";
 import {
   HashRouter as Router,
   Switch,
@@ -38,10 +39,21 @@ const ContentWrapper = ({ children }) => (
 function ChatApp() {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
+  const isOnline = useSelector(({ app }) => app.isOnline);
 
   useEffect(() => {
-    dispatch(listenToAuthChanges());
+    const unsubcribeFromAuth = dispatch(listenToAuthChanges());
+    const unsubcribeFromConnection = dispatch(listenToConnectionChanges());
+
+    return () => {
+      unsubcribeFromAuth();
+      unsubcribeFromConnection();
+    };
   }, [dispatch]);
+
+  if(!isOnline) {
+    return <LoadingView message="Application has been disconnected from the internet. Please reconnect..."/>
+  }
 
   if (isChecking) {
     return <LoadingView />;
