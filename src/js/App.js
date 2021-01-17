@@ -6,6 +6,7 @@ import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
 import LoadingView from "./components/shared/LoadingView";
+import ChatCreate from "./views/ChatCreate";
 import { listenToAuthChanges } from "./actions/auth";
 import { listenToConnectionChanges } from "./actions/app";
 import {
@@ -51,8 +52,10 @@ function ChatApp() {
     };
   }, [dispatch]);
 
-  if(!isOnline) {
-    return <LoadingView message="Application has been disconnected from the internet. Please reconnect..."/>
+  if (!isOnline) {
+    return (
+      <LoadingView message="Application has been disconnected from the internet. Please reconnect..." />
+    );
   }
 
   if (isChecking) {
@@ -69,6 +72,9 @@ function ChatApp() {
           </Route>
           <AuthRoute path="/chat/:id">
             <ChatView />
+          </AuthRoute>
+          <AuthRoute path="/chatCreate">
+            <ChatCreate />
           </AuthRoute>
           <AuthRoute path="/settings">
             <SettingsView />
