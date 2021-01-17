@@ -20,12 +20,12 @@ export const fetchChats = () => (dispatch) =>
     })
   );
 
-export const createChat = (formData, userId) => (dispatch) => {
+export const createChat = (formData, userId) => async (dispatch) => {
   const newChat = { ...formData };
-  const useRef = db.doc(`profiles/${userId}`);
-  newChat.admin = useRef;
-  newChat.joinedUsers = [useRef];
-  return api
-    .createChat(newChat)
-    .then((_) => dispatch({ type: "CHATS_CREATE_SUCCESS" }));
+  newChat.admin = db.doc(`userProfiles/${userId}`);
+  const chatId = await api.createChat(newChat);
+  dispatch({type: 'CHATS_CREATE_SUCCESS'});
+  await api.joinChat(userId, chatId)
+  dispatch({type: 'CHATS_JOIN_SUCCESS'});
+  return chatId;
 };

@@ -1,6 +1,7 @@
 import * as api from "../api/auth";
 
 export const registerUser = (formData) => (dispatch) => {
+  debugger;
   dispatch({ type: "AUTH_REGISTER_INIT" });
   return api
     .register(formData)
