@@ -24,7 +24,6 @@ export async function register({ email, password, username, avatar }) {
       avatar,
       joinedChats: [],
     };
-    debugger;
     await createUserProfile(userProfile);
     return userProfile;
   } catch (error) {

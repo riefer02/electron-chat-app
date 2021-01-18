@@ -12,7 +12,6 @@ export default function RegisterForm() {
 
   const onSubmit = (registerData) => {
     dispatch(registerUser(registerData));
-    debugger;
   };
 
   if (isChecking) {
