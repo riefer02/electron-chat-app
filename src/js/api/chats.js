@@ -1,15 +1,15 @@
-import db from "../db/firestore";
-import firebase from "firebase/app";
+import db from '../db/firestore';
+import firebase from 'firebase/app';
 
 const extractSnapshotData = (snapshot) =>
   snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
 export const fetchChats = () =>
-  db.collection("chats").get().then(extractSnapshotData);
+  db.collection('chats').get().then(extractSnapshotData);
 
 export const createChat = (chat) =>
   db
-    .collection("chats")
+    .collection('chats')
     .add(chat)
     .then((docRef) => docRef.id);
 
@@ -27,9 +27,15 @@ export const joinChat = async (userId, chatId) => {
 
 export const subscribeToChat = (chatId, onSubscribe) =>
   db
-    .collection("chats")
+    .collection('chats')
     .doc(chatId)
     .onSnapshot((snapshot) => {
       const chat = { id: snapshot.id, ...snapshot.data() };
       onSubscribe(chat);
     });
+
+export const subscribeToProfile = (userId, onSubscribe) =>
+  db
+    .collection('userProfiles')
+    .doc(userId)
+    .onSnapshot((snapshot) => onSubscribe(snapshot.data()));

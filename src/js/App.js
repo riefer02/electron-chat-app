@@ -1,20 +1,21 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import StoreProvider from "./store/StoreProvider";
-import HomeView from "./views/Home";
-import SettingsView from "./views/Settings";
-import WelcomeView from "./views/Welcome";
-import ChatView from "./views/Chat";
-import LoadingView from "./components/shared/LoadingView";
-import ChatCreate from "./views/ChatCreate";
-import { listenToAuthChanges } from "./actions/auth";
-import { listenToConnectionChanges } from "./actions/app";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import StoreProvider from './store/StoreProvider';
+import HomeView from './views/Home';
+import SettingsView from './views/Settings';
+import WelcomeView from './views/Welcome';
+import ChatView from './views/Chat';
+import LoadingView from './components/shared/LoadingView';
+import ChatCreate from './views/ChatCreate';
+import { listenToAuthChanges } from './actions/auth';
+import { listenToConnectionChanges } from './actions/app';
+import { checkUserConnection } from './actions/connection';
 import {
   HashRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 function AuthRoute({ children, ...rest }) {
   const user = useSelector(({ auth }) => auth.user);
@@ -41,16 +42,27 @@ function ChatApp() {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
   const isOnline = useSelector(({ app }) => app.isOnline);
+  const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
-    const unsubcribeFromAuth = dispatch(listenToAuthChanges());
-    const unsubcribeFromConnection = dispatch(listenToConnectionChanges());
+    const unsubscribeFromAuth = dispatch(listenToAuthChanges());
+    const unsubscribeFromConnection = dispatch(listenToConnectionChanges());
 
     return () => {
-      unsubcribeFromAuth();
-      unsubcribeFromConnection();
+      unsubscribeFromAuth();
+      unsubscribeFromConnection();
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    let unsubscribeFromUserConnection;
+    if (user?.uid) {
+      unsubscribeFromUserConnection = dispatch(checkUserConnection(user.uid));
+    }
+    return () => {
+      unsubscribeFromUserConnection && unsubscribeFromUserConnection();
+    };
+  }, [dispatch, user]);
 
   if (!isOnline) {
     return (
@@ -67,7 +79,7 @@ function ChatApp() {
       <ContentWrapper>
         <Switch>
           <Route path="/" exact>
-            {" "}
+            {' '}
             <WelcomeView />
           </Route>
           <AuthRoute path="/chat/:id">
@@ -78,7 +90,7 @@ function ChatApp() {
           </AuthRoute>
           <AuthRoute path="/settings">
             <SettingsView />
-          </AuthRoute>{" "}
+          </AuthRoute>{' '}
           <AuthRoute path="/home">
             <HomeView />
           </AuthRoute>

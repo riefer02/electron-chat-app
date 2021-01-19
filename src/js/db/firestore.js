@@ -1,6 +1,6 @@
 //Firebase Proccess of JS
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -10,6 +10,7 @@ const config = {
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
 };
 // Initialize Firebase
 const db = firebase.initializeApp(config).firestore();

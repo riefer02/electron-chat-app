@@ -1,5 +1,5 @@
-import * as api from "../api/chats";
-import db from "../db/firestore";
+import * as api from '../api/chats';
+import db from '../db/firestore';
 
 // export function fetchChats() {
 //   return async function (dispatch) {
@@ -14,7 +14,7 @@ import db from "../db/firestore";
 
 export const fetchChats = () => async (dispatch, getState) => {
   const { user } = getState().auth;
-  dispatch({ type: "CHATS_FETCH_INIT" });
+  dispatch({ type: 'CHATS_FETCH_INIT' });
   const chats = await api.fetchChats();
   chats.forEach(
     (chat) => (chat.joinedUsers = chat.joinedUsers.map((user) => user.id))
@@ -22,7 +22,7 @@ export const fetchChats = () => async (dispatch, getState) => {
   const sortedChats = chats.reduce(
     (accuChats, chat) => {
       accuChats[
-        chat.joinedUsers.includes(user.uid) ? "joined" : "available"
+        chat.joinedUsers.includes(user.uid) ? 'joined' : 'available'
       ].push(chat);
       return accuChats;
     },
@@ -31,22 +31,22 @@ export const fetchChats = () => async (dispatch, getState) => {
       available: [],
     }
   );
-  dispatch({ type: "CHATS_FETCH_SUCCESS", ...sortedChats });
+  dispatch({ type: 'CHATS_FETCH_SUCCESS', ...sortedChats });
   return sortedChats;
 };
 
-export const joinChat = (chat, userId) => async (dispatch) =>
-  await api.joinChat(userId, chat.id).then((_) => {
-    dispatch({ type: "CHATS_JOIN_SUCCESS", chat });
+export const joinChat = (chat, userId) => (dispatch) =>
+  api.joinChat(userId, chat.id).then((_) => {
+    dispatch({ type: 'CHATS_JOIN_SUCCESS', chat });
   });
 
 export const createChat = (formData, userId) => async (dispatch) => {
   const newChat = { ...formData };
   newChat.admin = db.doc(`userProfiles/${userId}`);
   const chatId = await api.createChat(newChat);
-  dispatch({ type: "CHATS_CREATE_SUCCESS" });
+  dispatch({ type: 'CHATS_CREATE_SUCCESS' });
   await api.joinChat(userId, chatId);
-  dispatch({ type: "CHATS_JOIN_SUCCESS", chat: { ...newChat, id: chatId } });
+  dispatch({ type: 'CHATS_JOIN_SUCCESS', chat: { ...newChat, id: chatId } });
   return chatId;
 };
 
@@ -58,5 +58,12 @@ export const subscribeToChat = (chatId) => (dispatch) =>
         return userSnapshot.data();
       })
     );
-    dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
+    chat.joinedUsers = joinedUsers;
+
+    dispatch({ type: 'CHATS_SET_ACTIVE_CHAT', chat });
+  });
+
+export const subscribeToProfile = (userId, chatId) => (dispatch) =>
+  api.subscribeToProfile(userId, (user) => {
+    dispatch({ type: 'CHATS_UPDATE_USER_STATE', user, chatId });
   });

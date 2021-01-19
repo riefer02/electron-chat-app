@@ -1,11 +1,11 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer } = require('electron');
 
-const { contextBridge } = require("electron");
+const { contextBridge } = require('electron');
 
-contextBridge.exposeInMainWorld("electron", {
+contextBridge.exposeInMainWorld('electron', {
   notificationApi: {
     sendNotification(message) {
-      ipcRenderer.send("notify", message);
+      ipcRenderer.send('notify', message);
     },
   },
 });
