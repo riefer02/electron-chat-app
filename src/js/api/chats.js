@@ -39,3 +39,11 @@ export const subscribeToProfile = (userId, onSubscribe) =>
     .collection('userProfiles')
     .doc(userId)
     .onSnapshot((snapshot) => onSubscribe(snapshot.data()));
+
+export const sendChatMessage = (message, chatId) =>
+  db
+    .collection('chats')
+    .doc(chatId)
+    .collection('messages')
+    .doc(message.timestamp)
+    .set(message);

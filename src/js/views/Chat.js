@@ -7,7 +7,11 @@ import ChatMessagesList from '../components/ChatMessagesList';
 import Messenger from '../components/Messenger';
 import LoadingView from '../components/shared/LoadingView';
 import { withBaseLayout } from '../layouts/Base';
-import { subscribeToChat, subscribeToProfile } from '../actions/chats';
+import {
+  sendChatMessage,
+  subscribeToChat,
+  subscribeToProfile,
+} from '../actions/chats';
 
 function Chat() {
   const { id } = useParams();
@@ -40,9 +44,12 @@ function Chat() {
     [dispatch, id]
   );
 
-  const sendMessage = (message) => {
-    alert(message);
-  };
+  const sendMessage = useCallback(
+    (message) => {
+      dispatch(sendChatMessage(message, id));
+    },
+    [id]
+  );
 
   const unsubFromJoinedUsers = useCallback(() => {
     Object.keys(peopleWatchers.current).forEach((id) =>

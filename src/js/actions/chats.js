@@ -67,3 +67,14 @@ export const subscribeToProfile = (userId, chatId) => (dispatch) =>
   api.subscribeToProfile(userId, (user) => {
     dispatch({ type: 'CHATS_UPDATE_USER_STATE', user, chatId });
   });
+
+export const sendChatMessage = (message, chatId) => (dispatch, getState) => {
+  const newMessage = { ...message };
+  const { user } = getState().auth;
+  const userRef = db.doc(`userProfiles/${user.uid}`);
+  newMessage.author = userRef;
+
+  return api
+    .sendChatMessage(newMessage, chatId)
+    .then((_) => dispatch({ type: 'CHATS_MESSAGE_SENT' }));
+};
