@@ -63,7 +63,22 @@ function createChatReducer() {
     }
   );
 
-  return combineReducers({ joined, available, activeChats, messages });
+  const messagesSubs = (state = {}, action) => {
+    switch (action.type) {
+      case 'CHATS_REGISTER_MUESSAGE_SUB':
+        return { ...state, [action.chatId]: action.sub };
+      default:
+        return state;
+    }
+  };
+
+  return combineReducers({
+    joined,
+    available,
+    activeChats,
+    messages,
+    messagesSubs,
+  });
 }
 
 export default createChatReducer();
