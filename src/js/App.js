@@ -10,6 +10,7 @@ import ChatCreate from './views/ChatCreate';
 import { listenToAuthChanges } from './actions/auth';
 import { listenToConnectionChanges } from './actions/app';
 import { checkUserConnection } from './actions/connection';
+import { loadInitialSettings } from './actions/settings';
 import {
   HashRouter as Router,
   Switch,
@@ -34,10 +35,14 @@ function AuthRoute({ children, ...rest }) {
   );
 }
 
-const ContentWrapper = ({ children }) => (
-  <div className="content-wrapper">{children}</div>
-);
-
+const ContentWrapper = ({ children }) => {
+  const isDarkTheme = useSelector(({ settings }) => settings.isDarkTheme);
+  return (
+    <div className={`content-wrapper ${isDarkTheme ? 'dark' : 'light'}`}>
+      {children}
+    </div>
+  );
+};
 function ChatApp() {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
@@ -45,6 +50,7 @@ function ChatApp() {
   const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
+    dispatch(loadInitialSettings());
     const unsubscribeFromAuth = dispatch(listenToAuthChanges());
     const unsubscribeFromConnection = dispatch(listenToConnectionChanges());
 
