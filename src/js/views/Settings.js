@@ -50,7 +50,11 @@ function Settings() {
                 <label className="form-check-label">Sound notification</label>
               </div>
             </div>
-            <button type="button" onClick={() => {}} className="btn btn-danger">
+            <button
+              type="button"
+              onClick={() => electron.appApi.quitApp()}
+              className="btn btn-danger"
+            >
               Quit App
             </button>
           </div>

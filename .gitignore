@@ -3,6 +3,7 @@ node_modules
 
 # Build files
 dist/
+build/
 
 # lock files
 yarn.lock

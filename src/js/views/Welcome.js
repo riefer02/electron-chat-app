@@ -8,6 +8,8 @@ export default function Welcome() {
   const [isLoginView, setIsLogin] = useState(true);
   const user = useSelector(({ auth }) => auth.user);
 
+  // const entireState = useSelector((state) => state);
+
   const optInText = isLoginView
     ? ['Need an account?', 'Register']
     : ['Already registered?', 'Login'];
