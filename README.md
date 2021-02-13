@@ -1,2 +1,2 @@
-# React - An Electron Chat Application
+# React - An Electron Chat Application 1.0.0
 
