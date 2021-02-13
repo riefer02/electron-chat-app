@@ -1,7 +1,7 @@
 {
-  "name": "electronchat",
-  "version": "1.0.0",
-  "description": "this application is for chatting.",
+  "name": "ReactChat", // This will be great for attartcing users with something modern
+  "version": "1.0.0", // For minor fixes increase the 2nd position, for a major update increase the 1st position, for bug fixes and other --> the 3rd position (left to right)
+  "description": "This chat app connect people that want a simple and modern experience along with ease of use.", // Attract the right target audience
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -95,3 +95,5 @@
     "webpack-cli": "^4.3.1"
   }
 }
+
+// Remove the comments after stable release
