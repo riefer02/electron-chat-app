@@ -113,3 +113,4 @@ app.on('activate', () => {
 
 console.log('Hello World!');
 console.log(process.platform);
+console.log('We made it!, Website has loaded');
