@@ -1,6 +1,6 @@
 {
   "name": "ReactChat",
-  "version": "1.0.1",
+  "version": "1.1",
   "description": "This chat app connect people that want a simple and modern experience along with ease of use.",
   "main": "main.js",
   "scripts": {
